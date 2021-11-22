@@ -1,17 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <title>Document</title>
-    <link rel="stylesheet" href="theme.css">
-</head>
-        <body class="dark-mode">
-    Hello world
-</body>
+    <link rel="stylesheet" href="theme.css" />
+  </head>
+  <body class="dark-mode">
+    <div id="app">
+      <div>{{message}}</div>
+      <div v-bind:title="message">hover over here</div>
+      <div v-if="seen">Now you see me</div>
+      <ol>
+        <li v-for="todo in todos">{{todo.text}}</li>
+      </ol>
+      <ol>
+        <todo-item
+          v-for="item in groceryList"
+          :todo="item"
+          :key="item.id"
+        ></todo-item>
+      </ol>
+      <input v-model="message" /><br />
+      <button v-on:click="reverseMessage">Reverse Message</button>
+    </div>
 
+    <script>
+      Vue.component("todo-item", {
+        props: ["todo"],
+        template: "<li>{{todo.text}}</li>",
+      });
 
-
+      var app = new Vue({
+        el: "#app",
+        data: {
+          message: "Hello Vue! on " + new Date().toLocaleDateString(),
+          seen: false,
+          todos: [{ text: "one" }, { text: "two" }, { text: "three" }],
+          groceryList: [
+            { id: 0, text: "cheese" },
+            { id: 1, text: "meats" },
+            { id: 2, text: "milk" },
+          ],
+        },
+        methods: {
+          reverseMessage: function () {
+            this.message = this.message.split("").reverse().join("");
+          },
+        },
+      });
+    </script>
+  </body>
 </html>
